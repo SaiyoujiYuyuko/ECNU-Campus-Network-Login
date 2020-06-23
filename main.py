@@ -1,7 +1,7 @@
 import requests
 from lxml import html
 from apscheduler.schedulers.blocking import BlockingScheduler
-
+from apscheduler.triggers.interval import IntervalTrigger
 
 def login(username, password):
     sess = requests.session()
@@ -12,12 +12,12 @@ def login(username, password):
 
         keys = ["action", "ac_id", "user_ip", "ip", "nas_ip", "user_mac", "url", "is_second"]
         values = [(tree.xpath("//input[@name='{}']/@value".format(key))[0]) for key in keys]
-
+        
         payload = {
             "ajax": "1",
             "save_me": "0",
-            "username": username,
-            "password": password
+            "username": "学号",
+            "password": "密码"
         }
 
         return sess.post(login_url, data={**dict(zip(keys, values)), **payload}, headers=dict(referer=login_url))
@@ -26,6 +26,7 @@ def login(username, password):
 
 
 if __name__ == "__main__":
+    trigger = IntervalTrigger(minutes=60)
     scheduler = BlockingScheduler()
-    scheduler.add_job(login("username", "password"), 'interval', minutes=15)
+    scheduler.add_job(login("username", "password"),trigger=trigger)
     scheduler.start()
