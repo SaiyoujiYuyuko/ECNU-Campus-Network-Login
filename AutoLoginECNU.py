@@ -16,8 +16,8 @@ def login(username, password):
         payload = {
             "ajax": "1",
             "save_me": "0",
-            "username": "52183904008",
-            "password": "sjw930824"
+            "username": "USERNAME",
+            "password": "PASSWORD"
         }
 
         return sess.post(login_url, data={**dict(zip(keys, values)), **payload}, headers=dict(referer=login_url))
